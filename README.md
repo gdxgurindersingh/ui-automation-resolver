@@ -26,3 +26,10 @@ This project is a sample UI automation framework using Selenium WebDriver, TestN
 
 	•	Java 8 or higher
 	•	Maven
+
+## Generate Allure Report:
+To generate the Allure report, run the following Maven command:
+```dtd
+mvn allure:report
+mvn allure:serve
+```
