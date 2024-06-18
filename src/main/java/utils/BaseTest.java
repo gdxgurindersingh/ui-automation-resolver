@@ -23,7 +23,7 @@ import java.nio.file.Paths;
 
 //@Listeners(TestListener.class)
 public class BaseTest {
-    protected WebDriver driver;
+    protected CustomWebDriver driver;
     private static final Logger logger = LogManager.getLogger(BaseTest.class);
     protected static final ConfigProperties config = ConfigFactory.create(ConfigProperties.class);
 
@@ -36,9 +36,9 @@ public class BaseTest {
             throw new IllegalArgumentException("Configuration properties are not loaded correctly.");
         }
 
+        WebDriver rawDriver;
+
         if (browser.equalsIgnoreCase("chrome")) {
-            WebDriverManager.chromedriver().clearDriverCache().setup();
-            WebDriverManager.chromedriver().clearResolutionCache().setup();
             WebDriverManager.chromedriver().setup();
             ChromeOptions options = new ChromeOptions();
             options.addArguments("--remote-allow-origins=*");
@@ -46,22 +46,22 @@ public class BaseTest {
                 options.addArguments("--headless");
                 options.addArguments("--disable-gpu");
             }
-            driver = new ChromeDriver(options);
+            rawDriver = new ChromeDriver(options);
         } else if (browser.equalsIgnoreCase("firefox")) {
             WebDriverManager.firefoxdriver().setup();
             FirefoxOptions options = new FirefoxOptions();
             if (headless) {
                 options.addArguments("--headless");
             }
-            driver = new FirefoxDriver(options);
+            rawDriver = new FirefoxDriver(options);
         } else {
             throw new IllegalArgumentException("Browser " + browser + " is not supported.");
         }
 
+        driver = new CustomWebDriver(rawDriver);
         driver.manage().window().maximize();
         logger.info("Browser setup completed.");
     }
-
 
     @AfterMethod
     public void teardown(ITestResult result) {
