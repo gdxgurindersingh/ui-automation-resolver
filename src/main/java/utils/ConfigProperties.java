@@ -30,4 +30,13 @@ public interface ConfigProperties extends Config {
 
     @Key("recipient")
     String recipient();
+
+    @Key("implicitlyWait")
+    long implicitlyWait();
+
+    @Key("setScriptTimeout")
+    long setScriptTimeout();
+
+    @Key("pageLoadTimeout")
+    long pageLoadTimeout();
 }
