@@ -62,7 +62,8 @@ mvn allure:report
 ```shell
 mvn allure:serve
 ```
-
+Below is a preview of the generated report:
+![Allure_Report](resources/allure-report-screenshot.png)
 
 ### 🔄 Toggle Headless and Browser Options
 
