@@ -5,6 +5,7 @@ import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
 import pages.HomePage;
 import testData.DataProviders;
 import utils.BaseTest;
@@ -26,8 +27,7 @@ public class HomePageTest extends BaseTest {
     public void test1_LoginPageFormDisplay(String email, String password) {
         homePage.open();
         Assert.assertTrue(homePage.isLoginFormDisplayed(), "Login Page is not displayed.");
-
-        /*Separating the test data from the test class, I am using TestNG’s data provider feature.*/
+        //Separating the test data from the test class, I am using TestNG’s data provider feature
         //This test runs twice to depict multi run according to number of data values in Data Provider
         homePage.login(email, password);
     }
@@ -38,9 +38,10 @@ public class HomePageTest extends BaseTest {
     @Step("Test List Group Items")
     public void test2_ListGroupItems() {
         homePage.open();
-        Assert.assertEquals(homePage.getListItemsCount(), 3, "List group items count is not 3.");
-        Assert.assertEquals(homePage.getListItemText(2).trim(), "List Item 2", "Second list item text is not 'List Item 2'.");
-        Assert.assertEquals(homePage.getListItemBadgeText(2), "6", "Second list item badge value is not '6'.");
+        softAssert.assertEquals(homePage.getListItemsCount(), 3, "List group items count is not 3.");
+        softAssert.assertEquals(homePage.getListItemText(2).trim(), "List Item 2", "Second list item text is not 'List Item 2'.");
+        softAssert.assertEquals(homePage.getListItemBadgeText(2), "6", "Second list item badge value is not '6'.");
+        softAssert.assertAll();
     }
 
     @Test(priority = 3, description = "Test to verify dropdown functionality")
@@ -49,9 +50,11 @@ public class HomePageTest extends BaseTest {
     @Step("Test Dropdown Functionality")
     public void test3_DropdownFunctionality() {
         homePage.open();
-        Assert.assertEquals(homePage.getSelectedDropdownOption(), "Option 1", "Default selected option is not 'Option 1'.");
+        softAssert.assertEquals(homePage.getSelectedDropdownOption(), "Option 1", "Default selected option is not 'Option 1'.");
         homePage.selectDropdownOption("Option 3");
-        Assert.assertEquals(homePage.getSelectedDropdownOption(), "Option 3", "Selected option is not 'Option 3'.");
+        softAssert.assertEquals(homePage.getSelectedDropdownOption(), "Option 3", "Selected option is not 'Option 3'.");
+
+        softAssert.assertAll();
     }
 
     @Test(priority = 4, description = "Test to verify button states")
@@ -60,8 +63,10 @@ public class HomePageTest extends BaseTest {
     @Step("Test Button States")
     public void Test4_buttonStates() {
         homePage.open();
-        Assert.assertTrue(homePage.isEnabledButtonEnabled(), "Enabled button is not enabled.");
-        Assert.assertTrue(homePage.isDisabledButtonDisabled(), "Disabled button is not disabled.");
+        softAssert.assertTrue(homePage.isEnabledButtonEnabled(), "Enabled button is not enabled.");
+        softAssert.assertTrue(homePage.isDisabledButtonDisabled(), "Disabled button is not disabled.");
+
+        softAssert.assertAll();
     }
 
     @Test(priority = 5, description = "Test to verify delayed button functionality")
@@ -71,8 +76,10 @@ public class HomePageTest extends BaseTest {
     public void test5_DelayedButtonFunctionality() {
         homePage.open();
         homePage.waitForTest5ButtonAndClick();
-        Assert.assertTrue(homePage.isTest5AlertDisplayed(), "Success message is not displayed.");
-        Assert.assertTrue(homePage.isTest5ButtonDisabled(), "Button is not disabled after click.");
+        softAssert.assertTrue(homePage.isTest5AlertDisplayed(), "Success message is not displayed.");
+        softAssert.assertTrue(homePage.isTest5ButtonDisabled(), "Button is not disabled after click.");
+
+        softAssert.assertAll();
     }
 
     @Test(priority = 6, description = "Test to verify table cell value")
