@@ -26,14 +26,13 @@ import java.util.concurrent.TimeUnit;
 public class BaseTest {
     protected CustomWebDriver driver;
     private static final Logger logger = LogManager.getLogger(BaseTest.class);
-    private Properties properties;
     protected SoftAssert softAssert;
 
 
     @BeforeMethod
     public void setup() {
         softAssert = new SoftAssert();
-        properties = loadProperties();
+        Properties properties = loadProperties();
         String browser = System.getProperty("browser", properties.getProperty("browser"));
         boolean headless = Boolean.parseBoolean(System.getProperty("headless", properties.getProperty("headless")));
 
@@ -79,46 +78,6 @@ public class BaseTest {
         }
     }
 
-/*    @BeforeMethod
-    public void setup() {
-        // Check for system properties first
-        String browser = System.getProperty("browser", config.browser());
-        boolean headless = Boolean.parseBoolean(System.getProperty("headless", String.valueOf(config.headless())));
-
-        if (browser == null) {
-            throw new IllegalArgumentException("Configuration properties are not loaded correctly.");
-        }
-
-        WebDriver rawDriver;
-
-        if (browser.equalsIgnoreCase("chrome")) {
-            WebDriverManager.chromedriver().setup();
-            ChromeOptions options = new ChromeOptions();
-            options.addArguments("--remote-allow-origins=*");
-            if (headless) {
-                options.addArguments("--headless");
-                options.addArguments("--disable-gpu");
-            }
-            rawDriver = new ChromeDriver(options);
-        } else if (browser.equalsIgnoreCase("firefox")) {
-            WebDriverManager.firefoxdriver().setup();
-            FirefoxOptions options = new FirefoxOptions();
-            if (headless) {
-                options.addArguments("--headless");
-            }
-            rawDriver = new FirefoxDriver(options);
-        } else {
-            throw new IllegalArgumentException("Browser " + browser + " is not supported.");
-        }
-
-        driver = new CustomWebDriver(rawDriver);
-        driver.manage().timeouts().implicitlyWait(config.implicitlyWait(), TimeUnit.SECONDS);
-        driver.manage().timeouts().pageLoadTimeout(config.pageLoadTimeout(), TimeUnit.SECONDS);
-        driver.manage().timeouts().setScriptTimeout(config.setScriptTimeout(), TimeUnit.SECONDS);
-        driver.manage().window().maximize();
-        logger.info("Browser setup completed.");
-    }*/
-
     @AfterMethod
     public void teardown(ITestResult result) {
         if (!result.isSuccess()) {
@@ -155,8 +114,7 @@ public class BaseTest {
 
     protected String getBaseUrl() {
         String projectDir = System.getProperty("user.dir");
-        String indexPath = Paths.get(projectDir, "resources", "index.html").toUri().toString();
-        return indexPath;
+        return Paths.get(projectDir, "resources", "index.html").toUri().toString();
     }
 
     private Properties loadProperties() {
